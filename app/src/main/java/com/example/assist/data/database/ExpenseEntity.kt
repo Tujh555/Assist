@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
 import com.example.assist.domain.expense.Expense
 import com.example.assist.domain.expense.ExpenseTarget
-import com.example.assist.domain.part.Part
+import com.example.assist.domain.maintaince.Part
 
 class ExpenseEntity(
     @PrimaryKey(autoGenerate = true)

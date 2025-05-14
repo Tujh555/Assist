@@ -1,4 +1,4 @@
-package com.example.assist.domain.part
+package com.example.assist.domain.maintaince
 
 enum class Part(val mileageResource: Int) {
     Engine(100_000),

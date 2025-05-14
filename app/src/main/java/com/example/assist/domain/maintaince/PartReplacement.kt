@@ -1,4 +1,4 @@
-package com.example.assist.domain.part
+package com.example.assist.domain.maintaince
 
 class PartReplacement(
     val part: Part,

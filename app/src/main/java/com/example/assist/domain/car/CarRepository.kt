@@ -1,6 +1,5 @@
-package com.example.assist.domain.car.repository
+package com.example.assist.domain.car
 
-import com.example.assist.domain.car.Car
 import kotlinx.coroutines.flow.Flow
 
 interface CarRepository {
@@ -10,5 +9,5 @@ interface CarRepository {
 
     suspend fun select(id: Long)
 
-    suspend fun delete()
+    suspend fun delete(id: Long)
 }

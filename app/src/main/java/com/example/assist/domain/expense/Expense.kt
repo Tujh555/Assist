@@ -1,6 +1,6 @@
 package com.example.assist.domain.expense
 
-import com.example.assist.domain.part.Part
+import com.example.assist.domain.maintaince.Part
 
 class Expense(
     val id: Long,

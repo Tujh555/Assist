@@ -2,8 +2,7 @@ package com.example.assist.data.database
 
 import androidx.room.ColumnInfo
 import androidx.room.PrimaryKey
-import com.example.assist.domain.part.Part
-import com.example.assist.domain.part.PartReplacement
+import com.example.assist.domain.maintaince.PartReplacement
 
 class MaintainceEntity(
     @PrimaryKey(autoGenerate = true)

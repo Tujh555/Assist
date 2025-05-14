@@ -1,7 +1,7 @@
 package com.example.assist.data.converter
 
 import androidx.room.TypeConverter
-import com.example.assist.domain.part.PartReplacement
+import com.example.assist.domain.maintaince.PartReplacement
 
 class Converters {
     @TypeConverter

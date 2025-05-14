@@ -1,8 +1,7 @@
 package com.example.assist.data.converter
 
-import com.example.assist.domain.part.Part
-import com.example.assist.domain.part.PartReplacement
-import okio.Buffer
+import com.example.assist.domain.maintaince.Part
+import com.example.assist.domain.maintaince.PartReplacement
 
 private const val separator = " "
 
