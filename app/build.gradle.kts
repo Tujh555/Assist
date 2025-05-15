@@ -78,4 +78,5 @@ dependencies {
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.okio)
+    implementation(libs.gson)
 }

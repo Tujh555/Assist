@@ -1,20 +1,38 @@
 package com.example.assist.data.database
 
 import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.example.assist.domain.expense.Expense
 import com.example.assist.domain.expense.ExpenseTarget
 import com.example.assist.domain.maintaince.Part
 
+@Entity(
+    tableName = "expenses",
+    foreignKeys = [
+        ForeignKey(
+            entity = CarEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["car_id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index(value = ["car_id"])]
+)
+
 class ExpenseEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Long,
+    @ColumnInfo(name = "car_id")
+    val carId: Long,
     @ColumnInfo(name = "part")
     val part: Part?,
-    @ColumnInfo(name = "part")
+    @ColumnInfo(name = "custom_target")
     val customTarget: String?,
-    @ColumnInfo(name = "part")
+    @ColumnInfo(name = "price")
     val price: Int
 )
 
@@ -32,7 +50,7 @@ fun ExpenseEntity.toDomain(): Expense {
     )
 }
 
-fun Expense.toDb(): ExpenseEntity {
+fun Expense.toDb(carId: Long): ExpenseEntity {
     var part: Part? = null
     var customTarget: String? = null
 
@@ -43,6 +61,7 @@ fun Expense.toDb(): ExpenseEntity {
 
     return ExpenseEntity(
         id = id,
+        carId = carId,
         part = part,
         customTarget = customTarget,
         price = price
