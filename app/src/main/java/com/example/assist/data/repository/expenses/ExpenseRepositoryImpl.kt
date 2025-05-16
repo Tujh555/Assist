@@ -1,9 +1,9 @@
 package com.example.assist.data.repository.expenses
 
-import com.example.assist.data.database.ExpenseDao
+import com.example.assist.data.database.dao.ExpenseDao
 import com.example.assist.data.database.ExpenseEntity
-import com.example.assist.data.database.toDb
-import com.example.assist.data.database.toDomain
+import com.example.assist.data.database.entity.toDb
+import com.example.assist.data.database.entity.toDomain
 import com.example.assist.domain.car.SelectedCar
 import com.example.assist.domain.expense.Expense
 import com.example.assist.domain.expense.ExpenseRepository

@@ -1,9 +1,9 @@
 package com.example.assist.data.repository.maintance
 
-import com.example.assist.data.database.MaintainanceEntity
-import com.example.assist.data.database.MaintainceDao
-import com.example.assist.data.database.resolve
-import com.example.assist.data.database.toDomain
+import com.example.assist.data.database.entity.MaintainanceEntity
+import com.example.assist.data.database.dao.MaintainceDao
+import com.example.assist.data.database.dao.resolve
+import com.example.assist.data.database.entity.toDomain
 import com.example.assist.domain.car.SelectedCar
 import com.example.assist.domain.maintaince.MaintainceRepository
 import com.example.assist.domain.maintaince.Part
