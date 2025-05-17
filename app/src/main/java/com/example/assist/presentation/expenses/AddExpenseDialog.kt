@@ -40,10 +40,8 @@ data class ExpenseInputState(
 
 @Composable
 fun AddExpenseDialog(
-    state: ExpenseInputState,
-    onStateChange: (ExpenseInputState) -> Unit,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit,
+    onConfirm: (ExpenseInputState) -> Unit,
     visible: Boolean = false,
 ) {
     AnimatedVisibility(
@@ -51,6 +49,8 @@ fun AddExpenseDialog(
         enter = fadeIn() + scaleIn(),
         exit = fadeOut() + scaleOut()
     ) {
+        var state by remember { mutableStateOf(ExpenseInputState()) }
+
         AlertDialog(
             onDismissRequest = onDismiss,
             title = {
@@ -65,12 +65,12 @@ fun AddExpenseDialog(
                     OutlinedTextField(
                         value = state.sum,
                         onValueChange = {
-                            onStateChange(state.copy(sum = it.filter { c -> c.isDigit() }))
+                            state = state.copy(sum = it.filter { c -> c.isDigit() })
                         },
                         label = { Text("Сумма") },
                         trailingIcon = {
                             if (state.sum.isNotEmpty()) {
-                                IconButton(onClick = { onStateChange(state.copy(sum = "")) }) {
+                                IconButton(onClick = { state = state.copy(sum = "") }) {
                                     Icon(Icons.Default.Clear, contentDescription = "Очистить")
                                 }
                             }
@@ -106,7 +106,7 @@ fun AddExpenseDialog(
                                     DropdownMenuItem(
                                         text = { Text(item) },
                                         onClick = {
-                                            onStateChange(state.copy(type = item))
+                                            state = state.copy(type = item)
                                             dropdownExpanded = false
                                         }
                                     )
@@ -117,11 +117,11 @@ fun AddExpenseDialog(
 
                     OutlinedTextField(
                         value = state.comment,
-                        onValueChange = { onStateChange(state.copy(comment = it)) },
+                        onValueChange = { state = state.copy(comment = it) },
                         label = { Text("Комментарий") },
                         trailingIcon = {
                             if (state.comment.isNotEmpty()) {
-                                IconButton(onClick = { onStateChange(state.copy(comment = "")) }) {
+                                IconButton(onClick = { state = state.copy(comment = "") }) {
                                     Icon(Icons.Default.Clear, contentDescription = "Очистить")
                                 }
                             }
@@ -131,7 +131,7 @@ fun AddExpenseDialog(
                 }
             },
             confirmButton = {
-                TextButton(onClick = onConfirm) {
+                TextButton(onClick = { onConfirm(state) }) {
                     Text("Добавить")
                 }
             },
@@ -148,11 +148,8 @@ fun AddExpenseDialog(
 @Composable
 fun ExpensesScreenWithDialogPreview() {
     MaterialTheme {
-        var state by remember { mutableStateOf(ExpenseInputState()) }
         var visible by remember { mutableStateOf(true) }
         AddExpenseDialog(
-            state = state,
-            onStateChange = { state = it },
             onDismiss = { visible = false },
             onConfirm = { visible = false },
             visible = visible

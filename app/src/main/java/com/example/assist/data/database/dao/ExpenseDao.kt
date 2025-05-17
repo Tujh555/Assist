@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExpenseDao {
-    @Query("SELECT * FROM EXPENSES WHERE car_id = :carId")
+    @Query("SELECT * FROM EXPENSES WHERE car_id = :carId ORDER BY date DESC")
     fun observe(carId: Long) : Flow<List<ExpenseEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

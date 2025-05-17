@@ -11,21 +11,23 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import com.example.assist.data.database.toDomain
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class ExpenseRepositoryImpl @Inject constructor(
     private val dao: ExpenseDao,
     private val selectedCar: SelectedCar
 ) : ExpenseRepository {
-
-
-    override fun observe() = selectedCar.filterNotNull().flatMapLatest { car ->
-        dao.observe(car.id).map { list -> list.map(ExpenseEntity::toDomain) }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun observe() = selectedCar.flatMapLatest { car ->
+        dao.observe(car?.id ?: 0).map { list -> list.map(ExpenseEntity::toDomain) }
     }
 
 
     override suspend fun add(expense: Expense) {
-        val car = selectedCar.value ?: return
-        val entity = expense.toDb(car.id)
+        //val car = selectedCar.value ?: return
+        val entity = expense.toDb(
+            0// FIXME car.id
+        )
         dao.insert(entity)
     }
 

@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
@@ -25,9 +26,17 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorSaver
 import cafe.adriel.voyager.transitions.FadeTransition
 import com.example.assist.presentation.cars.CarsListScreen
+import com.example.assist.presentation.expenses.ExpenseScreen
+import com.example.assist.presentation.splash.SplashScreen
 import com.example.assist.ui.theme.AssistTheme
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.UUID
 
+val LocalRootNavigator = staticCompositionLocalOf<Navigator> {
+    error("LocalRootNavigator not provided")
+}
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,11 +44,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AssistTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
-                    CompositionLocalProvider(
-                        LocalNavigatorSaver provides RamNavigatorSaver.saver
-                    ) {
-                        Navigator(CarsListScreen()) { navigator ->
+                CompositionLocalProvider(
+                    LocalNavigatorSaver provides RamNavigatorSaver.saver
+                ) {
+                    Navigator(ExpenseScreen()) { navigator ->
+                        CompositionLocalProvider(
+                            LocalRootNavigator provides navigator
+                        ) {
                             FadeTransition(navigator) {
                                 it.Content()
                             }
@@ -52,6 +63,7 @@ class MainActivity : ComponentActivity() {
 
     private object RamNavigatorSaver {
         private val saverMap = MutableScatterMap<String, List<Screen>>()
+
         @OptIn(InternalVoyagerApi::class)
         val saver = NavigatorSaver { initial, key, stateHolder, disposeBehavior, parent ->
             Saver(
@@ -61,7 +73,13 @@ class MainActivity : ComponentActivity() {
                     uuid
                 },
                 restore = { uuid ->
-                    Navigator(saverMap.remove(uuid) ?: initial, key, stateHolder, disposeBehavior, parent)
+                    Navigator(
+                        saverMap.remove(uuid) ?: initial,
+                        key,
+                        stateHolder,
+                        disposeBehavior,
+                        parent
+                    )
                 }
             )
         }

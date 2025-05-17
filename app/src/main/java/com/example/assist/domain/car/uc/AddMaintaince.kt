@@ -7,6 +7,7 @@ import com.example.assist.domain.maintaince.MaintainceRepository
 import com.example.assist.domain.maintaince.Part
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import java.time.Instant
 import javax.inject.Inject
 
 class AddMaintaince @Inject constructor(
@@ -16,7 +17,7 @@ class AddMaintaince @Inject constructor(
     suspend operator fun invoke(part: Part, price: Int) = coroutineScope {
         launch { maintainceRepository.replace(part) }
         launch {
-            val expense = Expense(0, ExpenseTarget.CarPart(part), price)
+            val expense = Expense(0, ExpenseTarget.CarPart(part), price, Instant.now(), "")
             expenseRepository.add(expense)
         }
     }

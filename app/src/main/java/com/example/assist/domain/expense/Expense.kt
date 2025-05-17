@@ -1,11 +1,14 @@
 package com.example.assist.domain.expense
 
 import com.example.assist.domain.maintaince.Part
+import java.time.Instant
 
 class Expense(
     val id: Long,
     val target: ExpenseTarget,
     val price: Int,
+    val date: Instant,
+    val comment: String
 )
 
 sealed interface ExpenseTarget {

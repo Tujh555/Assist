@@ -8,16 +8,18 @@ import androidx.room.PrimaryKey
 import com.example.assist.domain.expense.Expense
 import com.example.assist.domain.expense.ExpenseTarget
 import com.example.assist.domain.maintaince.Part
+import dagger.multibindings.IntoMap
+import java.time.Instant
 
 @Entity(
     tableName = "expenses",
     foreignKeys = [
-        ForeignKey(
-            entity = CarEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["car_id"],
-            onDelete = ForeignKey.CASCADE
-        )
+//        ForeignKey(
+//            entity = CarEntity::class,
+//            parentColumns = ["id"],
+//            childColumns = ["car_id"],
+//            onDelete = ForeignKey.CASCADE
+//        )
     ],
     indices = [Index(value = ["car_id"])]
 )
@@ -33,7 +35,11 @@ class ExpenseEntity(
     @ColumnInfo(name = "custom_target")
     val customTarget: String?,
     @ColumnInfo(name = "price")
-    val price: Int
+    val price: Int,
+    @ColumnInfo(name = "date")
+    val date: Instant,
+    @ColumnInfo(name = "comment")
+    val comment: String
 )
 
 fun ExpenseEntity.toDomain(): Expense {
@@ -46,7 +52,9 @@ fun ExpenseEntity.toDomain(): Expense {
     return Expense(
         id = id,
         target = target,
-        price = price
+        price = price,
+        date = date,
+        comment = comment
     )
 }
 
@@ -64,6 +72,8 @@ fun Expense.toDb(carId: Long): ExpenseEntity {
         carId = carId,
         part = part,
         customTarget = customTarget,
-        price = price
+        price = price,
+        date = date,
+        comment = comment
     )
 }
