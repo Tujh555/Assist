@@ -1,4 +1,4 @@
-package com.example.assist.presentation.base.maintaince
+package com.example.assist.presentation.maintaince
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -76,60 +76,60 @@ fun MaintenanceScreen(
         Spacer(Modifier.height(24.dp))
 
         LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            items(parts) { part ->
-                PartItem(
-                    part = part,
-                    onUpdateClick = { onResetPart(part) }
-                )
-            }
+//            items(parts) { part ->
+//                PartItem(
+//                    part = part,
+//                    onUpdateClick = { onResetPart(part) }
+//                )
+//            }
         }
     }
 }
 
 
-@Composable
-fun PartItem(
-    part: CarPartRemaining,
-    onUpdateClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = part.name, color = Color(0xFF4CAF50)) // Зелёный текст
-                Text(text = "Оставшийся пробег: ${part.remainingMileage} км")
-            }
-
-            Button(onClick = onUpdateClick) {
-                Text("Обновить")
-            }
-        }
-    }
-}
+//@Composable
+//fun PartItem(
+//    part: CarPartRemaining,
+//    onUpdateClick: () -> Unit
+//) {
+//    Card(
+//        modifier = Modifier.fillMaxWidth(),
+//        shape = RoundedCornerShape(8.dp),
+//        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+//    ) {
+//        Row(
+//            modifier = Modifier.padding(16.dp),
+//            verticalAlignment = Alignment.CenterVertically,
+//            horizontalArrangement = Arrangement.SpaceBetween
+//        ) {
+//            Column(modifier = Modifier.weight(1f)) {
+//                Text(text = part.name, color = Color(0xFF4CAF50)) // Зелёный текст
+//                Text(text = "Оставшийся пробег: ${part.remainingMileage} км")
+//            }
+//
+//            Button(onClick = onUpdateClick) {
+//                Text("Обновить")
+//            }
+//        }
+//    }
+//}
 
 @Preview
 @Composable
 fun MaintenanceScreenPreview() {
-    val parts = listOf(
-        CarPartRemaining(1, "Масло", 3200),
-        CarPartRemaining(2, "Фильтр", 1200),
-        CarPartRemaining(3, "Тормозные колодки", 8000)
-    )
-
-    var mileage by remember { mutableStateOf("125000") }
-
-    MaintenanceScreen(
-        mileageInput = mileage,
-        onMileageInputChange = { mileage = it },
-        onSaveMileageClick = { println("Пробег сохранён: $mileage") },
-        parts = parts,
-        onResetPart = { part -> println("Сброс пробега для: ${part.name}") }
-    )
+//    val parts = listOf(
+//        CarPartRemaining(1, "Масло", 3200),
+//        CarPartRemaining(2, "Фильтр", 1200),
+//        CarPartRemaining(3, "Тормозные колодки", 8000)
+//    )
+//
+//    var mileage by remember { mutableStateOf("125000") }
+//
+//    MaintenanceScreen(
+//        mileageInput = mileage,
+//        onMileageInputChange = { mileage = it },
+//        onSaveMileageClick = { println("Пробег сохранён: $mileage") },
+//        parts = parts,
+//        onResetPart = { part -> println("Сброс пробега для: ${part.name}") }
+//    )
 }
