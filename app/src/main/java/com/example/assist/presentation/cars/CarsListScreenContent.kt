@@ -54,7 +54,7 @@ fun CarsListScreenContent(state: CarsListScreen.State, onAction: (CarsListScreen
     }
 }
 
-private val border = BorderStroke(1.dp, Color.Black),
+private val border = BorderStroke(1.dp, Color.Black)
 
 @Composable
 private fun CarItem(
@@ -73,3 +73,4 @@ private fun CarItem(
 
     }
 }
+
