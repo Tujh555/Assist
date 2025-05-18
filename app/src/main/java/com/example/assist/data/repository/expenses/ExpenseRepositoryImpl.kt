@@ -22,7 +22,6 @@ class ExpenseRepositoryImpl @Inject constructor(
         dao.observe(car?.id ?: 0).map { list -> list.map(ExpenseEntity::toDomain) }
     }
 
-
     override suspend fun add(expense: Expense) {
         //val car = selectedCar.value ?: return
         val entity = expense.toDb(
@@ -33,5 +32,9 @@ class ExpenseRepositoryImpl @Inject constructor(
 
     override suspend fun delete(id: Long) {
         dao.delete(id)
+    }
+
+    override suspend fun edit(id: Long, price: Int, comment: String) {
+        dao.edit(id, price, comment)
     }
 }

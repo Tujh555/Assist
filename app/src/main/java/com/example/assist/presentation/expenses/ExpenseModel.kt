@@ -2,6 +2,7 @@ package com.example.assist.presentation.expenses
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import com.example.assist.domain.expense.Expense
 import com.example.assist.domain.expense.ExpenseRepository
 import com.example.assist.domain.expense.ExpenseTarget
@@ -32,7 +33,20 @@ class ExpenseModel @Inject constructor(
     override fun onAction(action: ExpenseScreen.Action) {
         when (action) {
             is ExpenseScreen.Action.Create -> add(action.inputState)
+            is ExpenseScreen.Action.Edit -> update { it.copy(editableExpense = action.item) }
+            is ExpenseScreen.Action.FinishEdit -> finishEdit(action.inputState)
         }
+    }
+
+    private fun finishEdit(inputState: ExpenseInputState) {
+        val editing = state.value.editableExpense ?: return
+        update { it.copy(editableExpense = null) }
+
+        inputState
+            .runCatching { sum.toInt() to comment }
+            .onSuccess { (price, comment) ->
+                screenModelScope.io { repository.edit(editing.id, price, comment) }
+            }
     }
 
     private fun observeList() {
@@ -47,16 +61,18 @@ class ExpenseModel @Inject constructor(
     }
 
     private fun add(inputState: ExpenseInputState) {
-        val expense = Expense(
-            id = 0,
-            target = ExpenseTarget.Custom(inputState.type),
-            price = inputState.sum.toInt(),
-            date = Instant.now(),
-            comment = inputState.comment
-        )
-
-        viewModelScope.io {
-            repository.add(expense)
-        }
+        inputState
+            .runCatching {
+                Expense(
+                    id = 0,
+                    target = ExpenseTarget.Custom(inputState.type),
+                    price = inputState.sum.toInt(),
+                    date = Instant.now(),
+                    comment = inputState.comment
+                )
+            }
+            .onSuccess { expense ->
+                viewModelScope.io { repository.add(expense) }
+            }
     }
 }

@@ -27,11 +27,19 @@ class ExpenseScreen : StateComponent<ExpenseScreen.Action, ExpenseScreen.State>,
     @Immutable
     data class State(
         val expenses: Map<String, List<ExpenseItem>> = emptyMap(),
-        val listState: LazyListState = LazyListState()
+        val listState: LazyListState = LazyListState(),
+        val editableExpense: ExpenseItem? = null,
     )
 
     sealed interface Action {
-        data class Create(val inputState: ExpenseInputState) : Action
+        @JvmInline
+        value class Create(val inputState: ExpenseInputState) : Action
+
+        @JvmInline
+        value class Edit(val item: ExpenseItem?) : Action
+
+        @JvmInline
+        value class FinishEdit(val inputState: ExpenseInputState) : Action
     }
 
     @Composable

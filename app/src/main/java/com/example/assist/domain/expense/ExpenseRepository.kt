@@ -7,5 +7,7 @@ interface ExpenseRepository {
 
     suspend fun add(expense: Expense)
 
+    suspend fun edit(id: Long, price: Int, comment: String)
+
     suspend fun delete(id: Long)
 }

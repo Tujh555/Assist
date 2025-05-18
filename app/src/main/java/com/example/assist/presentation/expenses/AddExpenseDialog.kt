@@ -29,7 +29,7 @@ private val expenseTypesDefault = listOf(
     "Страхование"
 )
 
-private val keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+val numberKeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
 
 @Immutable
 data class ExpenseInputState(
@@ -56,7 +56,7 @@ fun AddExpenseDialog(
             title = {
                 Text(
                     text = "Добавление расхода",
-                    color = Color.Blue,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontWeight = FontWeight.Bold
                 )
             },
@@ -75,7 +75,7 @@ fun AddExpenseDialog(
                                 }
                             }
                         },
-                        keyboardOptions = keyboardOptions,
+                        keyboardOptions = numberKeyboardOptions,
                         singleLine = true
                     )
 

@@ -34,14 +34,18 @@ import com.example.assist.presentation.models.ExpenseItem
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExpensesScreenContent(state: ExpenseScreen.State, onAction: (ExpenseScreen.Action) -> Unit) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
+    Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .systemBarsPadding()
+        ) {
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 text = "Расходы",
                 style = MaterialTheme.typography.headlineSmall.copy(
-                    color = Color.Blue,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             )
 
@@ -60,7 +64,7 @@ fun ExpensesScreenContent(state: ExpenseScreen.State, onAction: (ExpenseScreen.A
                         ExpenseItemCard(
                             modifier = Modifier.animateItem(),
                             expense = item,
-                            onClick = {  }
+                            onClick = { onAction(ExpenseScreen.Action.Edit(item)) }
                         )
                     }
                 }
@@ -75,7 +79,7 @@ fun ExpensesScreenContent(state: ExpenseScreen.State, onAction: (ExpenseScreen.A
                 .padding(bottom = 24.dp, end = 24.dp),
             onClick = { dialogVisible = true }
         ) {
-            Icon(Icons.Default.Add, contentDescription = "Добавить")
+            Icon(Icons.Default.Add, contentDescription = null)
         }
 
         AddExpenseDialog(
@@ -86,6 +90,12 @@ fun ExpensesScreenContent(state: ExpenseScreen.State, onAction: (ExpenseScreen.A
             },
             visible = dialogVisible
         )
+
+        EditExpenseDialog(
+            onDismiss = { onAction(ExpenseScreen.Action.Edit(null)) },
+            onConfirm = { onAction(ExpenseScreen.Action.FinishEdit(it)) },
+            editableItem = state.editableExpense
+        )
     }
 }
 
@@ -95,12 +105,15 @@ fun ExpenseItemCard(
     expense: ExpenseItem,
     onClick: () -> Unit
 ) {
-    Card(
+    OutlinedCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        )
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -117,7 +130,8 @@ fun ExpenseItemCard(
                 Text(
                     text = expense.target,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
@@ -128,12 +142,14 @@ fun ExpenseItemCard(
                 Text(
                     text = expense.date,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
                     text = expense.comment,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -143,10 +159,13 @@ fun ExpenseItemCard(
 @Composable
 fun DateHeader(date: String) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
-        HorizontalDivider(thickness = 2.dp, color = Color.LightGray)
+        HorizontalDivider(thickness = 1.dp, color = Color.LightGray.copy(alpha = 0.4f))
         Text(
             text = date,
-            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            ),
             modifier = Modifier
                 .padding(vertical = 4.dp)
                 .fillMaxWidth(),
