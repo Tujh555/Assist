@@ -1,18 +1,17 @@
 package com.example.assist.data.converter
 
 import com.example.assist.domain.maintaince.Part
-import com.example.assist.domain.maintaince.PartReplacement
 
 private const val separator = " "
 
-fun List<PartReplacement>.serialize() = joinToString(separator) { replacement ->
-    "${replacement.part.ordinal},${replacement.mileageReplacement}"
+fun Map<Part, Int>.serialize() = entries.joinToString(separator) { (part, mileage) ->
+    "${part.ordinal},${mileage}"
 }
 
-fun String.deserialize() = split(separator).map { replacementString ->
+fun String.deserialize() = split(separator).associate { replacementString ->
     val (partOrdinal, mileageReplacement) = replacementString
         .split(",")
         .map(String::toInt)
 
-    PartReplacement(Part.entries[partOrdinal], mileageReplacement)
+    Part.entries[partOrdinal] to mileageReplacement
 }

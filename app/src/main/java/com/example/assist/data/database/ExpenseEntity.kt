@@ -14,12 +14,12 @@ import java.time.Instant
 @Entity(
     tableName = "expenses",
     foreignKeys = [
-//        ForeignKey(
-//            entity = CarEntity::class,
-//            parentColumns = ["id"],
-//            childColumns = ["car_id"],
-//            onDelete = ForeignKey.CASCADE
-//        )
+        ForeignKey(
+            entity = CarEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["car_id"],
+            onDelete = ForeignKey.CASCADE
+        )
     ],
     indices = [Index(value = ["car_id"])]
 )

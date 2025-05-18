@@ -1,6 +1,7 @@
 package com.example.assist.presentation.expenses
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -46,8 +47,8 @@ fun AddExpenseDialog(
 ) {
     AnimatedVisibility(
         visible = visible,
-        enter = fadeIn() + scaleIn(),
-        exit = fadeOut() + scaleOut()
+        enter = fadeIn(tween(200)) + scaleIn(tween(200)),
+        exit = fadeOut(tween(200)) + scaleOut(tween(200))
     ) {
         var state by remember { mutableStateOf(ExpenseInputState()) }
 

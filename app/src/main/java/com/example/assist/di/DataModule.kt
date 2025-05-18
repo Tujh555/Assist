@@ -33,10 +33,10 @@ interface DataModule {
     fun carRepository(impl: CarRepositoryImpl): CarRepository
 
     @Binds
-    fun expenseRepository(impl: ExpenseRepositoryImpl): ExpenseRepository
+    fun expenseRepository(factory: ExpenseRepositoryImpl.Factory): ExpenseRepository.Factory
 
     @Binds
-    fun maintainceRepository(impl: MaintainedRepositoryImpl): MaintainceRepository
+    fun maintainceRepository(factory: MaintainedRepositoryImpl.Factory): MaintainceRepository.Factory
 
     companion object {
         @Provides
@@ -60,15 +60,19 @@ interface DataModule {
                 AssistDatabase::class.java,
                 AssistDatabase::class.simpleName.orEmpty()
             )
+            .fallbackToDestructiveMigration(true)
             .build()
 
         @Provides
+        @Singleton
         fun carDao(database: AssistDatabase) = database.carDao
 
         @Provides
+        @Singleton
         fun expenseDao(database: AssistDatabase) = database.expenseDao
 
         @Provides
+        @Singleton
         fun maintainceDao(database: AssistDatabase) = database.maintainceDao
     }
 }

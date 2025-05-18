@@ -1,6 +1,6 @@
 package com.example.assist.domain.car
 
-class Car(
+data class Car(
     val id: Long,
     val brand: String,
     val model: String,

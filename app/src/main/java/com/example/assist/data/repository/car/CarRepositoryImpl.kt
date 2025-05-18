@@ -21,7 +21,7 @@ class CarRepositoryImpl @Inject constructor(
         list.map(CarEntity::toDomain)
     }
 
-    override suspend fun add(car: Car) {
+    override suspend fun put(car: Car) {
         dao.insert(car.toDb())
     }
 
@@ -31,5 +31,9 @@ class CarRepositoryImpl @Inject constructor(
 
     override suspend fun delete(id: Long) {
         dao.delete(id)
+    }
+
+    override suspend fun updateMileage(id: Long, mileage: Int) {
+        dao.updateMileage(id, mileage)
     }
 }

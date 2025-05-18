@@ -1,7 +1,8 @@
-package com.example.assist.presentation.expenses
+package com.example.assist.presentation.maintaince
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -11,44 +12,41 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.hilt.getViewModel
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
+import com.example.assist.domain.maintaince.Part
 import com.example.assist.presentation.base.StateComponent
-import com.example.assist.presentation.models.ExpenseItem
+import com.example.assist.presentation.models.Replacement
 
-class ExpenseScreen : StateComponent<ExpenseScreen.Action, ExpenseScreen.State>, Tab {
+class MaintainceScreen : StateComponent<MaintainceScreen.Action, MaintainceScreen.State>, Tab {
     override val options: TabOptions
         @Composable
         get() = run {
-            val painter = rememberVectorPainter(Icons.Filled.Home)
+            val painter = rememberVectorPainter(Icons.Filled.Build)
             remember {
-                TabOptions(index = 0u, "Home", painter)
+                TabOptions(index = 1u, "Maintaince", painter)
             }
         }
 
     @Immutable
     data class State(
-        val expenses: Map<String, List<ExpenseItem>> = emptyMap(),
-        val listState: LazyListState = LazyListState(),
-        val editableExpense: ExpenseItem? = null,
+        val mileage: String = "",
+        val replacements: List<Replacement> = emptyList(),
+        val listState: LazyListState = LazyListState()
     )
 
     sealed interface Action {
         @JvmInline
-        value class Create(val inputState: ExpenseInputState) : Action
+        value class Mileage(val value: String) : Action
 
-        @JvmInline
-        value class Edit(val item: ExpenseItem?) : Action
+        data object UpdateMileage : Action
 
-        @JvmInline
-        value class FinishEdit(val inputState: ExpenseInputState) : Action
-
-        data object DeleteEditing : Action
+        data class UpdatePart(val part: Part, val price: String) : Action
     }
 
     @Composable
     @NonRestartableComposable
     override fun Content(state: State, onAction: (Action) -> Unit) =
-        ExpensesScreenContent(state, onAction)
+        MaintenanceScreenContent(state, onAction)
 
     @Composable
-    override fun model() = getViewModel<ExpenseModel>()
+    override fun model() = getViewModel<MaintainceModel>()
 }

@@ -94,6 +94,7 @@ fun ExpensesScreenContent(state: ExpenseScreen.State, onAction: (ExpenseScreen.A
         EditExpenseDialog(
             onDismiss = { onAction(ExpenseScreen.Action.Edit(null)) },
             onConfirm = { onAction(ExpenseScreen.Action.FinishEdit(it)) },
+            delete = { onAction(ExpenseScreen.Action.DeleteEditing) },
             editableItem = state.editableExpense
         )
     }

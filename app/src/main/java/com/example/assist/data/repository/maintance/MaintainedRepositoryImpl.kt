@@ -1,40 +1,43 @@
 package com.example.assist.data.repository.maintance
 
+import android.util.Log
 import com.example.assist.data.database.entity.MaintainanceEntity
 import com.example.assist.data.database.dao.MaintainceDao
 import com.example.assist.data.database.dao.resolve
 import com.example.assist.data.database.entity.toDomain
+import com.example.assist.domain.car.Car
 import com.example.assist.domain.car.SelectedCar
 import com.example.assist.domain.maintaince.MaintainceRepository
 import com.example.assist.domain.maintaince.Part
-import com.example.assist.domain.maintaince.PartReplacement
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class MaintainedRepositoryImpl @Inject constructor(
-    private val selectedCar: SelectedCar,
+class MaintainedRepositoryImpl @AssistedInject constructor(
+    @Assisted private val car: Car,
     private val dao: MaintainceDao
 ) : MaintainceRepository {
-    override fun observe() = selectedCar.filterNotNull().flatMapLatest { car ->
-        dao.observe(car.id).filterNotNull().map(MaintainanceEntity::toDomain)
+    @AssistedFactory
+    interface Factory : MaintainceRepository.Factory {
+        override fun invoke(p1: Car): MaintainedRepositoryImpl
+    }
+
+    override fun observe() = dao.observe(car.id).map(MaintainanceEntity?::toDomain).onEach {
+        Log.d("-tag", "all replacements = $it")
     }
 
     override suspend fun replace(part: Part) {
-        val car = selectedCar.value ?: return
-        val replacements = dao.resolve(car.id)?.replacements ?: return
-
-        val map = LinkedHashMap<Part, Int>()
-        replacements.forEach { replacement ->
-            map[replacement.part] = replacement.mileageReplacement
-        }
-        map[part] = car.mileage
-
-        val maintaince = MaintainanceEntity(
-            carId = car.id,
-            replacements = map.toList().map(::PartReplacement)
-        )
+        val replacements = dao.resolve(car.id)?.replacements.orEmpty().toMutableMap()
+        Log.e("--tag", "existing replacements = $replacements for $car")
+        replacements[part] = car.mileage
+        Log.e("--tag", "updated = $replacements")
+        val maintaince = MaintainanceEntity(car.id, replacements)
         dao.insert(maintaince)
     }
 }

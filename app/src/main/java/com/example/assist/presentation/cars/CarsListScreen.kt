@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.NonRestartableComposable
 import cafe.adriel.voyager.hilt.getViewModel
+import cafe.adriel.voyager.navigator.Navigator
 import com.example.assist.domain.car.Car
 import com.example.assist.presentation.base.StateComponent
 
@@ -17,8 +18,7 @@ class CarsListScreen : StateComponent<CarsListScreen.Action, CarsListScreen.Stat
     )
 
     sealed interface Action {
-        @JvmInline
-        value class Select(val id: Long) : Action
+        data class Select(val id: Long, val navigator: Navigator) : Action
 
         @JvmInline
         value class Delete(val id: Long) : Action

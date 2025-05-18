@@ -15,12 +15,14 @@ import androidx.compose.ui.util.fastForEach
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
+import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.example.assist.presentation.expenses.ExpenseScreen
+import com.example.assist.presentation.maintaince.MaintainceScreen
 
 class MainScreen : Screen {
     // TODO add another
-    private val tabs = listOf(ExpenseScreen())
+    private val tabs: List<Tab> = listOf(ExpenseScreen(), MaintainceScreen())
 
     @Composable
     override fun Content() {

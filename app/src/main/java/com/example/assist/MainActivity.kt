@@ -27,6 +27,7 @@ import cafe.adriel.voyager.navigator.NavigatorSaver
 import cafe.adriel.voyager.transitions.FadeTransition
 import com.example.assist.presentation.cars.CarsListScreen
 import com.example.assist.presentation.expenses.ExpenseScreen
+import com.example.assist.presentation.maintaince.MaintainceScreen
 import com.example.assist.presentation.splash.SplashScreen
 import com.example.assist.ui.theme.AssistTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,7 +48,7 @@ class MainActivity : ComponentActivity() {
                 CompositionLocalProvider(
                     LocalNavigatorSaver provides RamNavigatorSaver.saver
                 ) {
-                    Navigator(ExpenseScreen()) { navigator ->
+                    Navigator(SplashScreen()) { navigator ->
                         CompositionLocalProvider(
                             LocalRootNavigator provides navigator
                         ) {

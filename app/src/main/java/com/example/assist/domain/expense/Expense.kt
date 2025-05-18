@@ -7,8 +7,8 @@ class Expense(
     val id: Long,
     val target: ExpenseTarget,
     val price: Int,
-    val date: Instant,
-    val comment: String
+    val date: Instant = Instant.now(),
+    val comment: String = ""
 )
 
 sealed interface ExpenseTarget {

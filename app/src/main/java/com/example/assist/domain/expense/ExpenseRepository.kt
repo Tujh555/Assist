@@ -1,8 +1,11 @@
 package com.example.assist.domain.expense
 
+import com.example.assist.domain.car.Car
 import kotlinx.coroutines.flow.Flow
 
 interface ExpenseRepository {
+    interface Factory : (Car) -> ExpenseRepository
+
     fun observe(): Flow<List<Expense>>
 
     suspend fun add(expense: Expense)

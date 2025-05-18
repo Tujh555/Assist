@@ -6,11 +6,13 @@ import com.example.assist.data.repository.car.CurrentCar
 import com.example.assist.presentation.base.StateHolder
 import com.example.assist.presentation.base.StateModel
 import com.example.assist.presentation.base.io
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeoutOrNull
 import javax.inject.Inject
 
+@HiltViewModel
 class SplashModel @Inject constructor(
     private val currentCar: CurrentCar,
 ) : ViewModel(), StateModel<Nothing, Boolean?>, StateHolder<Boolean?> by StateHolder(null) {
